@@ -21,13 +21,19 @@ public class W1D1{
 
             public void run(){
 
-                if (counter.get() == 1 || flag == true){
-                    t.cancel();
-                    t.purge();
-                    
-                } 
-                System.out.println("Time Left: " + counter.decrementAndGet());
-                // This update the countdown number outside of this function so we know when the timer hits 0
+                try {
+                    if (counter.get() == 1 || flag == true){
+                        t.cancel();
+                        
+                    }
+                    else {
+                        // This update the countdown number outside of this function so we know when the timer hits 0
+                    System.out.println("Time Left: " + counter.decrementAndGet());
+                    }
+                } catch (IllegalStateException e){
+                    System.out.println(e);
+                }
+
             }
 
             
@@ -146,14 +152,12 @@ public class W1D1{
         Scanner lineSC = new Scanner(System.in);
         // a variable that allows the user to continue playing until they don't want to anymore
         boolean con = true;
-        boolean repeat;
 
         // While con (continue) is true, the game will continue 
         while (con){
             System.out.println("Pick your game mode:");
             System.out.println("( 1 ) Classic Mode\n( 2 ) Difficult Mode\n( 3 ) Time Mode");
             String line = lineSC.next();
-            repeat = true;
             // This switch case allow the user to pick the gamemodes
             switch(line){
                 // Case 1 will be the classic gamemode
