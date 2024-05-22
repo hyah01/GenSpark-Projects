@@ -3,7 +3,7 @@
 * It consist of 2 constructor the basic 3x3 or ?x? based on the user input
 * */
 public class Board {
-    private String [][] board;
+    final private String [][] board;
 
     // Constructor to create 3x3 grid for the game
     public Board(){
@@ -93,43 +93,53 @@ public class Board {
 
     // This is function that checks the horizontal and Vertical part of the grid and see whether the X or O is close to winning
     // It prioritizes its own winning over stopping the player from winning
-    public String nextMoveAI(int RC, int size){
-        int totalRowX = 0;
-        int totalRowO = 0;
-        int totalColX = 0;
-        int totalColO = 0;
+    public String checkRowAI(int row, int size){
+        int totalX = 0;
+        int totalO = 0;
         // Counts the number of X's and O's in the row
         for (int i = 0; i < size; i++){
-            if (this.board[RC][i].equals("X")){
-                totalRowX++;
-            } else if (this.board[RC][i].equals("O")){
-                totalRowO++;
-            }
-            if (this.board[i][RC].equals("X")){
-                totalColX++;
-            } else if (this.board[i][RC].equals("O")){
-                totalColO++;
+            if (this.board[row][i].equals("X")){
+                totalX++;
+            } else if (this.board[row][i].equals("O")){
+                totalO++;
             }
         }
-        int maxNum = Math.max(totalRowX, Math.max(totalRowO, Math.max(totalColX, totalColO)));
 
-        if (totalRowO + totalRowX != size){
-            if (totalRowO == maxNum) {
-                return "R O " + totalRowO;
-            } else if (totalRowX == maxNum){
-                return "R X "+ totalRowX;
-            }
-        } if (totalColO + totalColX != size) {
-            if (totalColO == maxNum) {
-                return "C O " + totalColO;
-            } else if (totalColX == maxNum) {
-                return "C X " + totalColX;
-            } else {
-                return "R O 0";
-            }
+
+        if ((totalO + totalX) == size){
+            return "O 0";
+        } else if (totalX == 0){
+            return "O " + totalO;
+        } else if (totalO == 0){
+            return "X " + totalX;
         } else {
-            return "R O 0";
+            return "O " + Math.max(totalO,totalX);
+        }
+
+    }
+
+    public String checkColAI(int col, int size){
+        int totalX = 0;
+        int totalO = 0;
+        // Counts the number of X's and O's in the row
+        for (int i = 0; i < size; i++){
+            if (this.board[i][col].equals("X")){
+                totalX++;
+            } else if (this.board[i][col].equals("O")){
+                totalO++;
             }
+        }
+
+
+        if ((totalO + totalX) == size){
+            return "O 0";
+        } else if (totalX == 0){
+            return "O " + totalO;
+        } else if (totalO == 0){
+            return "X " + totalX;
+        } else {
+            return "O " + Math.max(totalO,totalX);
+        }
 
     }
 
@@ -194,22 +204,29 @@ public class Board {
         int largeNum = 0;
         String location = "";
         String cur;
-        int temp;
+        int priority;
 
         cur = this.NextMoveAI(size);
-        temp = Integer.parseInt(cur.split(" ")[2]);
-        if (temp > largeNum || (temp == largeNum && cur.split(" ")[1].equals("O"))){
-            largeNum = temp;
+        priority = Integer.parseInt(cur.split(" ")[2]);
+        if (priority > largeNum || (priority == largeNum && cur.split(" ")[1].equals("O"))){
+            largeNum = priority;
             location = cur.split(" ")[0];
         }
 
 
         for (int i = 0; i < size; i++) {
-            cur = this.nextMoveAI(i, size);
-            temp = Integer.parseInt(cur.split(" ")[2]);
-            if (temp > largeNum || (temp == largeNum && cur.split(" ")[1].equals("O"))) {
-                largeNum = temp;
-                location = STR."\{cur.split(" ")[0]} \{i}";
+            cur = this.checkRowAI(i, size);
+            priority = Integer.parseInt(cur.split(" ")[1]);
+            if (priority > largeNum || (priority == largeNum && cur.split(" ")[0].equals("O"))) {
+                largeNum = priority;
+                location = STR."R \{i}";
+            }
+
+            cur = this.checkColAI(i, size);
+            priority = Integer.parseInt(cur.split(" ")[1]);
+            if (priority > largeNum || (priority == largeNum && cur.split(" ")[0].equals("O"))) {
+                largeNum = priority;
+                location = STR."C \{i}";
             }
         }
 

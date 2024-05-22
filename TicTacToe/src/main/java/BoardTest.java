@@ -97,16 +97,26 @@ public class BoardTest {
     }
 
     @Test
-    public void testNextMoveAI(){
+    public void testCheckColAI(){
         Board test = new Board();
         test.changeBoard(0,0,"O");
-        assertEquals("R O 1",test.nextMoveAI(0,3));
-        test.changeBoard(0,1,"O");
-        assertEquals("R O 2",test.nextMoveAI(0,3));
-        test.changeBoard(0,2,"X");
-        assertEquals("C O 1",test.nextMoveAI(0,3));
+        assertEquals("O 1",test.checkColAI(0,3));
+        test.changeBoard(1,0,"O");
+        assertEquals("O 2",test.checkColAI(0,3));
+        test.changeBoard(2,0,"X");
+        assertEquals("O 0",test.checkColAI(0,3));
+    }
+
+    @Test
+    public void testCheckRowAI(){
+        Board test = new Board();
+        test.changeBoard(0,0,"O");
         test.changeBoard(0,2,"O");
-        assertEquals("R O 3",test.nextMoveAI(0,3));
+        assertEquals("O 2",test.checkRowAI(0,3));
+        test.changeBoard(0,1,"X");
+        assertEquals("O 0",test.checkRowAI(0,3));
+        test.changeBoard(1,1,"X");
+        assertEquals("X 1",test.checkRowAI(1,3));
     }
 
 
@@ -137,5 +147,23 @@ public class BoardTest {
         test.changeBoard(2,1,"O");
         test.changeBoard(2,2,"O");
         assertEquals("R 0",test.checkBoardAI(4));
+
+        test = new Board(4);
+        test.changeBoard(0,1,"X");
+        test.changeBoard(1,0,"X");
+        test.changeBoard(1,1,"X");
+        test.changeBoard(1,3,"X");
+        test.changeBoard(2,0,"X");
+        test.changeBoard(2,2,"X");
+        test.changeBoard(3,0,"X");
+        test.changeBoard(3,3,"X");
+        test.changeBoard(0,0,"O");
+        test.changeBoard(0,2,"O");
+        test.changeBoard(0,3,"O");
+        test.changeBoard(1,2,"O");
+        test.changeBoard(2,1,"O");
+        test.changeBoard(3,2,"O");
+        test.changeBoard(2,3,"O");
+        assertEquals("R 3",test.checkBoardAI(4));
     }
 }
