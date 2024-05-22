@@ -80,19 +80,62 @@ public class BoardTest {
     @Test
     public void testCheckBoard() {
         Board test = new Board();
-        assertEquals("N",test.checkBoard(3));
+        assertEquals("N",test.CheckWinner(3));
 
         test.changeBoard(0,0,"O");
         test.changeBoard(1,1,"O");
         test.changeBoard(2,2,"O");
-        assertEquals("O",test.checkBoard(3));
+        assertEquals("O",test.CheckWinner(3));
 
         test.changeBoard(1,1,"X");
-        assertEquals("N",test.checkBoard(3));
+        assertEquals("N",test.CheckWinner(3));
 
         test.changeBoard(0,1,"X");
         test.changeBoard(2,1,"X");
-        assertEquals("X",test.checkBoard(3));
+        assertEquals("X",test.CheckWinner(3));
 
+    }
+
+    @Test
+    public void testNextMoveAI(){
+        Board test = new Board();
+        test.changeBoard(0,0,"O");
+        assertEquals("R O 1",test.nextMoveAI(0,3));
+        test.changeBoard(0,1,"O");
+        assertEquals("R O 2",test.nextMoveAI(0,3));
+        test.changeBoard(0,2,"X");
+        assertEquals("C O 1",test.nextMoveAI(0,3));
+        test.changeBoard(0,2,"O");
+        assertEquals("R O 3",test.nextMoveAI(0,3));
+    }
+
+
+    @Test
+    public void testCheckBoardAI(){
+        Board test = new Board();
+        test.changeBoard(0,0,"O");
+        test.changeBoard(1,1,"O");
+        assertEquals("DR",test.checkBoardAI(3));
+        test.changeBoard(2,2,"X");
+        test.changeBoard(0,2,"O");
+        assertEquals("R 0",test.checkBoardAI(3));
+        test.changeBoard(0,0," ");
+        assertEquals("DL",test.checkBoardAI(3));
+
+        test = new Board(4);
+        test.changeBoard(0,0,"X");
+        test.changeBoard(1,0,"X");
+        test.changeBoard(0,3,"O");
+        assertEquals("C 0",test.checkBoardAI(4));
+
+        test = new Board(4);
+        test.changeBoard(0,1,"X");
+        test.changeBoard(0,2,"X");
+        test.changeBoard(1,0,"X");
+        test.changeBoard(2,3,"X");
+        test.changeBoard(2,0,"O");
+        test.changeBoard(2,1,"O");
+        test.changeBoard(2,2,"O");
+        assertEquals("R 0",test.checkBoardAI(4));
     }
 }

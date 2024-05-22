@@ -9,7 +9,7 @@ public class TicTacToeAdjustable {
     // Create A buffer that will read the line of user Inputs
     private final BufferedReader getInput = new BufferedReader(new InputStreamReader(System.in));
 
-    public void playAdjust() throws IOException {
+    public void playAdjust(int difficulty) throws IOException, InterruptedException {
         System.out.println("Welcome to Tic Tac Toe Adjustable Mode, please pick your grid size X ");
         String input;
         int size;
@@ -26,11 +26,10 @@ public class TicTacToeAdjustable {
                 System.out.println("Try 1 number only");
             }
         }
-        //System.out.println(STR."You picked size \{size} here is a \{size}x\{size} grid");
-        System.out.println("You picked size " + size +  " here is a " +size+ "x" + size+ " grid");
+        System.out.println(STR."You picked size \{size} here is a \{size}x\{size} grid");
 
         TicTacToeBasic game = new TicTacToeBasic();
-        game.play(size);
+        game.play(size,difficulty);
 
     }
 

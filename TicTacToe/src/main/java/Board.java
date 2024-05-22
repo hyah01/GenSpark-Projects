@@ -1,4 +1,3 @@
-
 /*
 * This class works as a Util to the Tic Tac Toe game
 * It consist of 2 constructor the basic 3x3 or ?x? based on the user input
@@ -39,6 +38,7 @@ public class Board {
     }
 
     // checkRow, checkCol, and checkDia are Helper functions that helps determine if that row,col, or diagonal has a winning player
+    // Check if the row contain the winning string it will return the winning player
     public String checkRow(int row, int size){
         String total = "";
         // Pre initialized the winning string to compare
@@ -47,7 +47,6 @@ public class Board {
         for (int i = 0; i < size; i++){
             total += this.board[row][i];
         }
-        // If the row contain the winning string it will return the winning player
         if (total.equals(xWin)){
             return "X";
         } else if (total.equals(oWin)){
@@ -56,6 +55,7 @@ public class Board {
         } return "N";
     }
 
+    // Check if the col contain the winning string it will return the winning player
     public String checkCol(int col, int size){
         String total = "";
         String xWin = "X".repeat(size);
@@ -63,7 +63,7 @@ public class Board {
         for (int i = 0; i < size; i++){
             total+= this.board[i][col];
         }
-        // If the col contain the winning string it will return the winning player
+
         if (total.equals(xWin)){
             return "X";
         } else if (total.equals(oWin)){
@@ -71,6 +71,7 @@ public class Board {
         } return "N";
     }
 
+    // Checks if the diagonal grid contains the winning string and return the winner
     public String checkDia(int size){
         String totalL = "";
         String totalR = "";
@@ -79,19 +80,94 @@ public class Board {
         for (int i = 0; i < size; i++){
             totalR += this.board[i][i];
             totalL += this.board[i][size-i-1];
-            }
-            // Checks if the diagonal grid contains the winning string and return the winner
-            if (totalR.equals(xWin)|| totalL.equals(xWin)){
-                return "X";
-            } else if (totalR.equals(oWin)|| totalL.equals(oWin)){
-                return "O";
-            }
-            return "N";
-        
         }
+
+        if (totalR.equals(xWin)|| totalL.equals(xWin)){
+            return "X";
+        } else if (totalR.equals(oWin)|| totalL.equals(oWin)){
+            return "O";
+        }
+        return "N";
+
+    }
+
+    // This is function that checks the horizontal and Vertical part of the grid and see whether the X or O is close to winning
+    // It prioritizes its own winning over stopping the player from winning
+    public String nextMoveAI(int RC, int size){
+        int totalRowX = 0;
+        int totalRowO = 0;
+        int totalColX = 0;
+        int totalColO = 0;
+        // Counts the number of X's and O's in the row
+        for (int i = 0; i < size; i++){
+            if (this.board[RC][i].equals("X")){
+                totalRowX++;
+            } else if (this.board[RC][i].equals("O")){
+                totalRowO++;
+            }
+            if (this.board[i][RC].equals("X")){
+                totalColX++;
+            } else if (this.board[i][RC].equals("O")){
+                totalColO++;
+            }
+        }
+        int maxNum = Math.max(totalRowX, Math.max(totalRowO, Math.max(totalColX, totalColO)));
+
+        if (totalRowO + totalRowX != size){
+            if (totalRowO == maxNum) {
+                return "R O " + totalRowO;
+            } else if (totalRowX == maxNum){
+                return "R X "+ totalRowX;
+            }
+        } if (totalColO + totalColX != size) {
+            if (totalColO == maxNum) {
+                return "C O " + totalColO;
+            } else if (totalColX == maxNum) {
+                return "C X " + totalColX;
+            } else {
+                return "R O 0";
+            }
+        } else {
+            return "R O 0";
+            }
+
+    }
+
+    // This is function that checks the diagonal left and right part of the grid and see whether the X or O is close to winning
+    // It prioritizes its own winning over stopping the player from winning
+    public String NextMoveAI(int size){
+        int totalXL = 0;
+        int totalOL = 0;
+        int totalXR = 0;
+        int totalOR = 0;
+        for (int i = 0; i < size; i++){
+            if (this.board[i][i].equals("X")){
+                totalXR++;
+            } else if (this.board[i][i].equals("O")){
+                totalOR++;
+            }
+            if (this.board[i][size-i-1].equals("X")){
+                totalXL++;
+            } else if (this.board[i][size-i-1].equals("O")){
+                totalOL++;
+            }
+        }
+
+        if (totalXR == 0) {
+            return "DR O " + totalOR;
+        } else if (totalOR == 0){
+            return "DR X "+ totalXR;
+        } else if (totalXL == 0){
+            return "DL O "+ totalOL;
+        } else if (totalOL == 0){
+            return "DL X "+ totalXL;
+        } else {
+            return "DR O 0";
+        }
+    }
     
-    // checkBoard utilizes all the helper methods to check if there is a winner
-    public String checkBoard(int size){
+    // CheckWinner utilizes all the helper methods to check if there is a winner
+    public String CheckWinner(int size){
         if (this.checkDia(size).equals("X")){
             return "X";
         } else if (checkDia(size).equals("O")){
@@ -112,6 +188,32 @@ public class Board {
         }
         // If no winner it returns "N"
         return "N";
+    }
+
+    public String checkBoardAI(int size){
+        int largeNum = 0;
+        String location = "";
+        String cur;
+        int temp;
+
+        cur = this.NextMoveAI(size);
+        temp = Integer.parseInt(cur.split(" ")[2]);
+        if (temp > largeNum || (temp == largeNum && cur.split(" ")[1].equals("O"))){
+            largeNum = temp;
+            location = cur.split(" ")[0];
+        }
+
+
+        for (int i = 0; i < size; i++) {
+            cur = this.nextMoveAI(i, size);
+            temp = Integer.parseInt(cur.split(" ")[2]);
+            if (temp > largeNum || (temp == largeNum && cur.split(" ")[1].equals("O"))) {
+                largeNum = temp;
+                location = STR."\{cur.split(" ")[0]} \{i}";
+            }
+        }
+
+        return location;
     }
     // What the Board will look like when the player plays the game
     /*  
