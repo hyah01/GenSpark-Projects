@@ -199,7 +199,6 @@ public class Board {
         // If no winner it returns "N"
         return "N";
     }
-
     public String checkBoardAI(int size){
         int largeNum = 0;
         String location = "";
