@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public class Room {
     private final String name;
     private String description;
-    private ArrayList<String> items;
-    private ArrayList<String> requiredItems;
+    private ArrayList<String> items = new ArrayList<>();
+    private ArrayList<String> requiredItems = new ArrayList<>();
     private String hints;
+    private ArrayList<String> nextRooms = new ArrayList<>();
+    private ArrayList<String> preRoomS = new ArrayList<>();
 
     public Room(String name){
         this.name = name;
@@ -43,6 +45,20 @@ public class Room {
 
     public void setHint(String hint){
         this.hints = hint;
+    }
+
+    public void addNextRoom(String room){
+        this.nextRooms.add(room);
+    }
+    public ArrayList<String> getNextRoom(){
+        return this.nextRooms;
+    }
+
+    public void addPreRoom(String room){
+        this.preRoomS.add(room);
+    }
+    public ArrayList<String> getPreRoom(){
+        return this.preRoomS;
     }
 
 
