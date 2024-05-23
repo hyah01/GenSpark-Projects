@@ -1,20 +1,25 @@
 package org.example;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Room {
     private final String name;
     private String description;
     private String outCome;
-    private String items;
+    private String items = "";
     private ArrayList<String> requiredItems = new ArrayList<>();
+    private ArrayList<String> ActionItem = new ArrayList<>();
     private String hints;
     private ArrayList<String> nextRooms = new ArrayList<>();
     private ArrayList<String> preRoomS = new ArrayList<>();
     private Boolean clear = false;
-
-    private String challenge;
+    private String challenge = "";
     private String answer;
+
+    private String event = "";
+    private ArrayList<String> eventOutCome = new ArrayList<>();
 
     private ArrayList<String> actions = new ArrayList();
 
@@ -53,6 +58,12 @@ public class Room {
     public ArrayList<String> getRequiredItems(){
         return this.requiredItems;
     }
+    public void setActionItem(String item){
+        this.ActionItem.add(item);
+    }
+    public ArrayList<String> getActionItem(){
+        return this.ActionItem;
+    }
 
     public String getHints() {
         return hints;
@@ -84,10 +95,21 @@ public class Room {
         this.clear = true;
     }
 
-    public void setActions(String action){
-        this.actions.add(action);
+    public void setEvent(String event){
+        this.event = event;
     }
-
+    public String getEvent(){
+        return this.event;
+    }
+    public void setEventOutcome(ArrayList<String> event){
+        this.eventOutCome = event;
+    }
+    public ArrayList<String> getEventOutcome(){
+        return this.eventOutCome;
+    }
+    public void setActions(ArrayList<String> action){
+        this.actions = action;
+    }
     public ArrayList<String> getActions(){
         return this.actions;
     }
@@ -106,6 +128,50 @@ public class Room {
 
     public Boolean getAnswer(String answer) {
         return (answer.equalsIgnoreCase(this.answer));
+    }
+
+    public boolean doAction(Item player, String action){
+        switch(action){
+            case "Grab":
+                player.giveItem(this.getItems());
+                this.cleared();
+                return true;
+            case "Use":
+                boolean hasAllItem = true;
+                for (String item: this.getActionItem()){
+                    if (!(player.hasItem(item))){
+                        System.out.println("You don't have the required item(s)");
+                        hasAllItem = false;
+                        return false;
+                    }
+                }
+                if (hasAllItem){
+                    for (String item: this.getActionItem()){
+                        player.removeItem(item);
+                    }
+                    this.cleared();
+                    return true;
+                }
+            case "Replace":
+                boolean hasItem = true;
+                for (String item: this.getActionItem()){
+                    if (!(player.hasItem(item))){
+                        System.out.println("...");
+                        hasAllItem = false;
+                        return false;
+                    }
+                }
+                if (hasItem){
+                    for (String item: this.getActionItem()){
+                        player.removeItem(item);
+                        player.giveItem(this.getItems());
+                    }
+                    this.cleared();
+                    return true;
+                }
+            default:
+                return true;
+        }
     }
 
 
