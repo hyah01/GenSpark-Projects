@@ -139,6 +139,10 @@ public class TicTacToeAI {
                 AI(size,difficulty,board);
                 turns += 1;
                 board.printBoard(size);
+                if (turns >= maxSize){
+                    System.out.println("It's A Draw");
+                    break;
+                }
                 if (board.CheckWinner(size).equals("O") ){
                     System.out.println("Sorry You Lost :((, But The AI Won Tho, WOOOOO!");
                     System.out.println("Skill Issue?");
