@@ -127,21 +127,18 @@ public class Room {
                 return true;
             // use the item if they have it and remove them, if not tell them they don't got it
             case "Use":
-                boolean hasAllItem = true;
                 for (String item: this.getActionItem()){
                     if (!(player.hasItem(item))){
                         System.out.println("You don't have the required item(s)");
-                        hasAllItem = false;
                         return false;
                     }
                 }
-                if (hasAllItem){
-                    for (String item: this.getActionItem()){
-                        player.removeItem(item);
-                    }
-                    this.cleared();
-                    return true;
+                for (String item: this.getActionItem()){
+                    player.removeItem(item);
                 }
+                this.cleared();
+                return true;
+
             // Trade in the item they have for something else
             case "Replace":
                 for (String item: this.getActionItem()){
@@ -153,6 +150,40 @@ public class Room {
                 for (String item: this.getActionItem()){
                     player.removeItem(item);
                     player.giveItem(this.getItems());
+                }
+                this.cleared();
+                return true;
+            case "Ending":
+                if (player.hasItem("Literature")){
+                    System.out.println("""
+                    Jacob Badson seems to noticed an unknown power within you...
+                    He let out an immense screech " IS THAT LITERATURE "
+                    Jacob Badson, the master of STEM, holding the 4 foundation Subject
+                    SCIENCE, ENGINEERING, TECHNOLOGY, and MATHEMATICS
+                    couldn't comprehend the power of literature, exploded into million of pieces
+                    
+                    Atlas the door out of this retches place was opened
+                    You my friend are a winner winner chicken dinner
+                    
+                    --- Fin ---
+                    """);
+                } else {
+                    System.out.println("""
+                    Jacob Badson, the master of STEM, holding the 4 foundation Subject
+                    SCIENCE, ENGINEERING, TECHNOLOGY, and MATHEMATICS
+                    couldn't help but to laughed at your pathetic display of "power".
+                    He simply flex on you with his 4 degrees and you fall down to the ground.
+                    He used his most power programing language out of the many programing languages that he knows.
+                    * Hy *
+                    
+                    While it was a powerful programing language, Jacob Badson didn't accounts that the power and blast
+                    energy of the Hy programing language could send you flying outside his lair.
+                    
+                    Atlas you were sent flying outside of his evil lair
+                    You my has escaped by some miracle, but your pride was wounded in the process.
+                    
+                    --- Fin ---
+                    """);
                 }
                 this.cleared();
                 return true;

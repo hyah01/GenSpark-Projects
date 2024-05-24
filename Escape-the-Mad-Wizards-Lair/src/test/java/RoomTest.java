@@ -162,5 +162,10 @@ public class RoomTest {
         assertFalse(player.hasItem("Stone"));
         assertFalse(player.hasItem("Stick"));
 
+        assertTrue(room.doAction(player,"Ending"));
+        player.giveItem("Literature");
+        assertTrue(room.doAction(player,"Ending"));
+
+
     }
 }
