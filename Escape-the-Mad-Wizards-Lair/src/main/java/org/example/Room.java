@@ -138,6 +138,19 @@ public class Room {
                 }
                 this.cleared();
                 return true;
+            // use the item if they have it and not removed it, if not tell them they don't got it
+            case "Use2":
+                for (String item: this.getActionItem()){
+                    if (!(player.hasItem(item))){
+                        System.out.println("You don't have the required item(s)");
+                        return false;
+                    }
+                }
+                if (!(this.getItems().isEmpty())){
+                    player.giveItem(this.getItems());
+                }
+                this.cleared();
+                return true;
 
             // Trade in the item they have for something else
             case "Replace":
